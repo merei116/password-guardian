@@ -1,0 +1,50 @@
+########################################
+#  Node / Vite
+########################################
+# Игнорируем все виртуалки и тяжёлые библиотеки
+model/.pwenv/
+dist/
+*.dll
+*.lib
+*.onnx
+*.jso
+node_modules/
+dist/                     # vite build output
+*.log                     # npm logs
+build/
+
+########################################
+#  Python & PyInstaller
+########################################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual‑envs
+.venv/
+env/
+venv/
+
+# PyInstaller build / dist
+installer/build/
+installer/dist/
+# One‑file installer exe
+
+
+########################################
+#  Model checkpoints & large data
+########################################
+public/model/*.pth
+public/model/.pwenv/
+public/model/dataset/
+# keep base_lstm.onnx / char_to_idx.json that ship with repo
+
+
+########################################
+#  User exports / test CSVs
+########################################
+*.csv
+
+########################################
+#  Mac /

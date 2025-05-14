@@ -1,0 +1,11 @@
+.pg-badge {
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font: 12px/16px monospace;
+  color: #fff;
+  user-select: none;
+}
+.pg-badge.WEAK { background: #e74c3c; }
+.pg-badge.MED  { background: #f1c40f; }
+.pg-badge.STRONG { background: #2ecc71; }
