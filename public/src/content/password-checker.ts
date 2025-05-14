@@ -97,6 +97,9 @@ async function loadPatterns (): Promise<Patterns> {
 
   // Hot‑reload patterns (Step4 worker → background → content)
   chrome.runtime.onMessage.addListener(msg => {
-    if (msg.type === 'hotReloadPatterns') Object.assign(patterns, msg.patterns)
-  })
+  if (msg.type === 'hotReloadPatterns') {
+    Object.assign(patterns, msg.patterns)
+  }
+})
+
 })()

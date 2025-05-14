@@ -9,6 +9,6 @@ const router = createRouter({
   routes,
 });
 
-const app = createApp(App);
-app.use(router);
-app.mount('#app');  // Mounts to <div id="app"> in index.html
+createApp(App)
+  .use(router)
+  .mount('#app')

@@ -13,7 +13,7 @@ a = Analysis(
     datas=[
         (str(root/'public'),       'extension-src/public'),
         (str(root/'public/src'),          'extension-src/src'),
-        (str(root/'public/index.html'),   'extension-src'),
+        (str(root/'index.html'),   'extension-src'),
         (str(root/'package.json'), 'extension-src'),
         (str(root/'vite.config.js'),'extension-src'),
         (str(root/'public/model'),        'model')

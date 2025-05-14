@@ -63,7 +63,7 @@ def main():
 
     run([str(chrome),
           f"--load-extension={dist}",
-          str((dist / 'public/index.html').resolve())])
+          str((dist / 'index.html').resolve())])
 
 if __name__ == "__main__":
     main()

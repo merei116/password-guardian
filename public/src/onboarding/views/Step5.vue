@@ -1,8 +1,18 @@
+<script setup lang="ts">
+import { set } from '../../shared/storage'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+function finish() {
+  set({ pg_done: true })         // mark onboarding complete
+  window.close()                 // close the popup
+}
+</script>
+
 <template>
   <section class="card text-center">
     <h2 class="title">All set! 🎉</h2>
-    <p class="mb-6">Password Guardian is now active.<br>Try typing a password on any site.</p>
-    <button class="btn" @click="close">Close</button>
+    <button class="btn" @click="finish">Finish</button>
   </section>
 </template>
 
