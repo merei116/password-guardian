@@ -10,14 +10,16 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import ProgressBar from '../components/ProgressBar.vue'
+import TrainWorker from '../../worker/train.worker.ts?worker';
 
 const pct = ref(0)
 const router = useRouter()
 const route = useRoute()
+const worker = new TrainWorker()
 
 onMounted(() => {
   const csv = atob(route.query.csv as string)
-  const worker = new Worker(new URL('../../worker/train.worker.ts', import.meta.url), { type: 'module' })
+  const worker = new TrainWorker()
   worker.postMessage({ csvText: csv })
 
   worker.onmessage = ({ data }) => {
@@ -29,4 +31,3 @@ onMounted(() => {
 <style scoped>
 @applyStyles;
 </style>
-

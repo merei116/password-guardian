@@ -3,6 +3,7 @@ import { set } from '../../shared/storage'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+
 function finish() {
   set({ pg_done: true })         // mark onboarding complete
   window.close()                 // close the popup
@@ -16,11 +17,6 @@ function finish() {
   </section>
 </template>
 
-<script setup>
-function close () { window.close() }
-</script>
-
 <style scoped>
 @applyStyles;
 </style>
-

@@ -11,12 +11,12 @@ a = Analysis(
     pathex=[],
     binaries=[],
     datas=[
-        (str(root/'public'),       'extension-src/public'),
-        (str(root/'public/src'),          'extension-src/src'),
+        (str(root),       'extension-src/'),
+        (str(root/'src'),          'extension-src/src'),
         (str(root/'index.html'),   'extension-src'),
         (str(root/'package.json'), 'extension-src'),
         (str(root/'vite.config.js'),'extension-src'),
-        (str(root/'public/model'),        'model')
+        (str(root/'model'),        'model')
     ],
     hiddenimports=[],
     noarchive=False

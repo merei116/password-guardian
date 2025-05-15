@@ -1,6 +1,6 @@
 // src/worker/train.worker.ts
 /* eslint-disable no-restricted-globals */
-import Papa from 'papaparse';                 // multi‑thread CSV parser  🗂
+import Papa from 'papaparse'              // multi‑thread CSV parser  🗂
 import { openDB } from 'idb';                 // tiny IndexedDB helper   📦
 
 interface WorkerRequest { csvText: string }

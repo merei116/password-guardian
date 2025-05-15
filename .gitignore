@@ -35,9 +35,9 @@ installer/dist/
 ########################################
 #  Model checkpoints & large data
 ########################################
-public/model/*.pth
-public/model/.pwenv/
-public/model/dataset/
+model/*.pth
+model/.pwenv/
+model/dataset/
 # keep base_lstm.onnx / char_to_idx.json that ship with repo
 
 

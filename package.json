@@ -9,11 +9,14 @@
   "dependencies": {
     "idb": "^8.0.3",
     "idb-keyval": "^6.2.1",
-    "onnxruntime-web": "^1.17.3"
+    "onnxruntime-web": "^1.17.3",
+    "papaparse": "^5.5.2",
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.1",
     "vite": "^5.0.1",
-    "vite-plugin-crx-mv3": "0.1.8"
+    "vite-plugin-crx-mv3": "0.1.8",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }
