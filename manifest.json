@@ -35,10 +35,9 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "src/content/*",
-        "src/worker/*",
-        "src/onboarding/*",
-        "assets/*"
+        "src/assets/patterns.json",
+        "*.js",
+        "*.css"
       ],
       "matches": ["<all_urls>"]
     }

@@ -12,17 +12,10 @@ export default defineConfig({
     crx({ manifest: manifestPath })
   ],
 
-  // Ensure papaparse is pre-bundled for both dev and build
-  optimizeDeps: {
-    include: ['papaparse']
-  },
-
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    rollupOptions: {
-      // If instead you want papaparse to remain external (not bundled), uncomment:
-      // external: ['papaparse']
-    }
+    assetsDir: ''
+    
   }
 })

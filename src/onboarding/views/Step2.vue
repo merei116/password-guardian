@@ -22,14 +22,19 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { set } from '../../shared/storage'
+import { fetchKeywords } from '../../worker/train_worker.ts'
 
 const full = ref(''), city = ref('')
 const valid = computed(() => full.value && city.value)
 const router = useRouter()
 
 async function next () {
-  await set({ fullName: full.value, city: city.value })
-  router.push('/import')
+  await set({ fullName: full.value, city: city.value });
+
+  const keywords = await fetchKeywords(full.value, city.value);
+  await set({ keywords });   // сохраняем ключевые слова
+
+  router.push('/done')
 }
 </script>
 

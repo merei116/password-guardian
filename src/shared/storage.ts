@@ -1,6 +1,12 @@
-export const get = <T = any>(k: string | string[]): Promise<T> =>
-  new Promise((r) => chrome.storage.local.get(k, r));
-export const set = (obj: any): Promise<void> =>
-  new Promise((r) => chrome.storage.local.set(obj, r));
+// src/shared/storage.ts
+
+export const get = <T = any>(key: string): Promise<T> =>
+  new Promise((resolve) => {
+    chrome.storage.local.get(key, data => resolve(data[key]));
+  });
+
+export const set = (obj: Record<string, any>): Promise<void> =>
+  new Promise((resolve) => chrome.storage.local.set(obj, () => resolve()));
+
 export const clear = (): Promise<void> =>
-  new Promise((r) => chrome.storage.local.clear(r));
+  new Promise((resolve) => chrome.storage.local.clear(resolve));

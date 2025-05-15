@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",                      // modern JavaScript
     "module": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext", "WebWorker"],                      // use native ESM
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],                      // use native ESM
     "moduleResolution": "node",              // resolve modules like Node
     "esModuleInterop": true,                 // allow default imports from CJS
     "strict": true,                          // enable all strict type-checking options

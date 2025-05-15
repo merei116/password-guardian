@@ -1,51 +1,27 @@
 // src/background.ts
-import { get, clear } from './shared/storage'
+import { openDB } from 'idb';
 
-// 1. On install or update, open onboarding popup if not done yet
-chrome.runtime.onInstalled.addListener(async () => {
-  const { pg_done } = await get('pg_done')
-  if (!pg_done) {
-    await chrome.action.openPopup()
+// On first install, open the extension’s popup or a welcome page
+chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason === 'install') {
+    // Open the extension’s popup page (index.html) in a new tab
+    chrome.tabs.create({ url: chrome.runtime.getURL('index.html') });
   }
-})
+});
 
-// 2. Message handler for UI ↔ background RPC
-chrome.runtime.onMessage.addListener((req, sender, send) => {
-  switch (req.type) {
-    // Content script asks for initial data (keywords + model flag)
-    case 'getUserData':
-      get(['keywords', 'hasPersonalModel']).then(data => send(data))
-      break
-
-    // “Reset everything” button
-    case 'wipeAll':
-      clear().then(() => {
-        chrome.runtime.reload()
-        send(true)
-      })
-      break
-
-    // Fired by installer after training completes
-    // We broadcast new patterns to all tabs
-    case 'modelUpdated':
-      // req.patterns should be included by the sender
-      chrome.tabs.query({}, tabs =>
-        tabs.forEach(t => {
-          if (t.id != null) {
-            chrome.tabs.sendMessage(t.id, {
-              type: 'hotReloadPatterns',
-              patterns: req.patterns
-            })
-          }
-        })
-      )
-      send(true)
-      break
-
-    default:
-      // not our message
-      break
+// When patterns have been saved (chrome.storage flag is set), load them and send to all tabs
+chrome.storage.onChanged.addListener(async (changes, area) => {
+  if (area === 'local' && changes.hasPatterns && changes.hasPatterns.newValue === true) {
+    // Load the patterns from IndexedDB
+    const db = await openDB('pg-store', 1);
+    const patterns = await db.get('patterns', 'profile') as any || {};
+    // Broadcast to all tabs so content scripts can update their badges
+    chrome.tabs.query({}, (tabs) => {
+      for (const tab of tabs) {
+        if (tab.id) {
+          chrome.tabs.sendMessage(tab.id, { type: 'hotReloadPatterns', patterns });
+        }
+      }
+    });
   }
-  // Return true to indicate we'll call send asynchronously
-  return true
-})
+});
