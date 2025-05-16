@@ -8,9 +8,7 @@
 #            --save_ckpt base.pth --export_onnx base_lstm.onnx
 #
 #  2) дообучить под личные пароли (CSV последняя колонка):
-#     python train_password_lstm.py --data export.csv --col -1 \
-#            --load_ckpt base.pth --save_ckpt personal.pth \
-#            --export_onnx personal_lstm.onnx --patterns patterns.json
+#     python train_password_lstm.py --data merei.csv --col -1 --load_ckpt base.pth --save_ckpt personal.pth --export_onnx personal_lstm.onnx --patterns patterns.json
 # ================================================================
 
 import argparse, os, json, random, re, sys, pathlib
