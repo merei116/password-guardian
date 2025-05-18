@@ -6,6 +6,7 @@ interface Patterns {
   masks?: Record<string, number>;
   words?: Record<string, number>;
   numbers?: Record<string, number>;
+  password_counts?: Record<string, number>;  // новое поле!
 }
 
 type RatedResult = {
@@ -82,7 +83,7 @@ async function loadDynamicPatterns(): Promise<Patterns> {
 
 (async () => {
   const staticPatterns = await loadStaticPatterns();
-  const dynamicPatterns = await loadDynamicPatterns(); // не используется, но можно внедрить
+  const dynamicPatterns = await loadDynamicPatterns(); // пока не используется
   const keywords: string[] = await get('keywords') || [];
   const keywordList = keywords.map(k => k.toLowerCase());
 
@@ -112,12 +113,18 @@ async function loadDynamicPatterns(): Promise<Patterns> {
           const matched = result.matches;
           const topKeywords = keywordList.slice(0, 5);
 
+          const passwordCounts = staticPatterns.password_counts || {};
+          const repeats = passwordCounts[val] || 0;
+
           const extraNotes: string[] = [];
           if (matched.length > 0) {
             extraNotes.push(`⚠️ Найдены совпадения: ${matched.join(', ')}`);
           }
           if (maskFreq > 0) {
             extraNotes.push(`⚠️ Маска "${mask}" встречалась ${maskFreq} раз`);
+          }
+          if (repeats > 1) {
+            extraNotes.push(`❗ Пароль встречался в истории ${repeats} раз`);
           }
 
           span.textContent = result.score;

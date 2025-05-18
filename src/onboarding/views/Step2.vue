@@ -22,7 +22,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { set } from '../../shared/storage'
-import { fetchKeywords } from '../../worker/train_worker.ts'
+import { fetchKeywords } from '../../worker/train_worker'
 
 const full = ref(''), city = ref('')
 const valid = computed(() => full.value && city.value)

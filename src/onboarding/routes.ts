@@ -6,5 +6,11 @@ import Step5 from './views/Step5.vue';
 export const onboardingRoutes = [
   { path: '/', component: Step1 },
   { path: '/id', component: Step2 },
-  { path: '/done', component: Step5 }
-]
+  { path: '/done', component: Step5 },
+];
+
+// Если тебе нужен сам router объект, то так:
+export const router = createRouter({
+  history: createWebHashHistory(),
+  routes: onboardingRoutes,
+});

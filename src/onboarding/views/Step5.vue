@@ -13,7 +13,7 @@ function finish() {
 <template>
   <section class="card text-center">
     <h2 class="title">All set! 🎉</h2>
-    <button class="btn" @click="finish">Finish</button>
+    <button @click="$router.push('/analyze')">Перейти в анализатор</button>
   </section>
 </template>
 

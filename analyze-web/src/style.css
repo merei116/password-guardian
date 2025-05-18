@@ -1,0 +1,182 @@
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4; /* Светлый фон для всей страницы */
+  font-family: sans-serif; /* Современный шрифт */
+}
+
+#app {
+  display: flex;
+  justify-content: center; /* Центрирование по горизонтали */
+  align-items: center; /* Центрирование по вертикали */
+}
+
+.max-w-xl {
+  max-width: 80%; /* Увеличиваем максимальную ширину, чтобы занимало большую часть страницы */
+  width: 100%; /* Занимает всю доступную ширину родителя */
+}
+
+.bg-white {
+  background-color: #fff; /* Белый фон для контейнера */
+}
+
+.p-8 {
+  padding: 3rem; /* Увеличиваем отступы */
+}
+
+.rounded-2xl {
+  border-radius: 1.5rem;
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Более заметная тень */
+}
+
+.text-2xl {
+  font-size: 2rem;
+  text-align: center; /* Центрирование заголовка */
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+input[type="password"] {
+  width: calc(100% - 2rem); /* Учитываем внутренние отступы */
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+button {
+  width: 100%;
+  background-color: #007bff; /* Современный синий */
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.px-3 {
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+}
+
+.py-1 {
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+}
+
+.rounded-full {
+  border-radius: 25px;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-white {
+  color: white;
+}
+
+.bg-red-500 {
+  background-color: #dc3545;
+}
+
+.bg-yellow-500 {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.bg-green-500 {
+  background-color: #28a745;
+}
+
+.text-yellow-700 {
+  color: #ff9800;
+}
+
+.mt-2 {
+  margin-top: 0.75rem;
+}
+
+.text-gray-700 {
+  color: #495057;
+}
+
+b {
+  font-weight: 700;
+}
+
+ul {
+  list-style: none;
+  padding-left: 1.2rem;
+}
+
+li::before {
+  content: "•";
+  color: #6c757d;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.my-8 {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+hr {
+  border-top: 1px solid #eee;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.text-lg {
+  font-size: 1.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.75rem;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Адаптивная сетка */
+  gap: 1rem;
+}
+
+.gap-2 {
+  gap: 0.75rem;
+}
+
+code {
+  background-color: #f8f9fa;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.2rem;
+  font-size: 0.9rem;
+  font-family: monospace;
+  color: #212529;
+}
