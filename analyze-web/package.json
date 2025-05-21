@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
+    "tailwind:init": "tailwindcss init -p",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -1,63 +1,54 @@
 <template>
-  <div class="max-w-xl mx-auto mt-10 bg-white p-8 rounded-2xl shadow-lg">
-    <h1 class="text-2xl font-bold mb-4">Проверка силы пароля</h1>
+  <div class="container">
+    <h1 class="title">Password Strength Analyzer</h1>
 
-    <!-- ─────────── input ─────────── -->
     <input
       v-model="password"
-      type="password"
-      placeholder="Введите пароль"
-      class="w-full p-3 border rounded-xl mb-4"
+      type="text"
+      placeholder="Type your passwords"
     />
-    <button
-      @click="analyzePassword"
-      class="w-full bg-blue-500 text-white py-2 rounded-xl mb-4 hover:bg-blue-600"
-    >
-      🔍 Проверить пароль
+    <button @click="analyzePassword">
+      🔍 Check
     </button>
 
-    <!-- ─────────── результаты ─────────── -->
-    <div v-if="password" class="mb-4">
-      <div :class="`inline-block px-3 py-1 rounded-full font-semibold text-white ${badgeClass}`">
+    <div v-if="password" class="results">
+      <div :class="`badge ${badgeClass}`">
         {{ strengthLabel }}
       </div>
 
-      <div v-if="matchedPatterns.length" class="text-yellow-700 mt-2">
-        <b>Совпадения с паттернами:</b>
+      <div v-if="matchedPatterns.length" class="warning">
+        <b>Pattern matches:</b>
         <ul>
           <li v-for="pat in matchedPatterns" :key="pat">⚠️ {{ pat }}</li>
         </ul>
       </div>
 
-      <div v-if="modelScore !== null" class="text-gray-700 mt-2">
+      <div v-if="modelScore !== null" class="stat">
         <b>avg (-log P):</b> {{ modelScore.toFixed(3) }}
       </div>
-      <div v-if="strengthPercent !== null" class="text-gray-700">
-        <b>Сила пароля:</b> {{ strengthPercent }} %
+      <div v-if="strengthPercent !== null" class="stat">
+        <b>Password's strength:</b> {{ strengthPercent }} %
       </div>
     </div>
 
-    <!-- график -->
-    <PasswordChart
-      :patterns="patterns"   
-      :top-n="7"          
-      />
+    <PasswordChart :patterns="patterns" :top-n="7" />
 
-    <hr class="my-6" />
+    <hr />
 
-    <h2 class="text-lg font-semibold mb-2">Маски, по которым пароли легко угадывают</h2>
-    <ul class="mb-4 grid grid-cols-2 gap-2">
+    <h2 class="section-title">Masks that make passwords easy to guess:</h2>
+    <ul class="grid-list">
       <li v-for="m in topMasks" :key="m.mask">
         <code>{{ m.mask }}</code>: <b>{{ m.count }}</b>
       </li>
     </ul>
 
-    <h2 class="text-lg font-semibold mb-2">❗ Рекомендуется избегать</h2>
+    <h2 class="section-title">❗Recommended to avoid</h2>
     <ul>
       <li v-for="bad in avoidPatterns" :key="bad">🚫 {{ bad }}</li>
     </ul>
   </div>
 </template>
+
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'

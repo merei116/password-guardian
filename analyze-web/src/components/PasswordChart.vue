@@ -59,7 +59,7 @@ function render () {
     data: {
       labels,
       datasets: [{
-        label: 'Повторы',
+        label: 'Reps',
         data,
         backgroundColor: 'rgba(54, 162, 235, 0.6)'
       }]
@@ -71,8 +71,8 @@ function render () {
         title : {
           display: true,
           text   : labels.length > 1
-            ? 'Самые частые пароли'
-            : 'Общее число ZigZag-паролей'
+            ? 'Most reused passwords'
+            : 'Total number of ZigZag passwords'
         }
       },
       scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }

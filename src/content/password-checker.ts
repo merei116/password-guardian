@@ -118,13 +118,13 @@ async function loadDynamicPatterns(): Promise<Patterns> {
 
           const extraNotes: string[] = [];
           if (matched.length > 0) {
-            extraNotes.push(`⚠️ Найдены совпадения: ${matched.join(', ')}`);
+            extraNotes.push(`⚠️ Matches found: ${matched.join(', ')}`);
           }
           if (maskFreq > 0) {
-            extraNotes.push(`⚠️ Маска "${mask}" встречалась ${maskFreq} раз`);
+            extraNotes.push(`⚠️ The mask "${mask}" has been encountered ${maskFreq} times`);
           }
           if (repeats > 1) {
-            extraNotes.push(`❗ Пароль встречался в истории ${repeats} раз`);
+            extraNotes.push(`❗ The password has been found ${repeats} times in the history`);
           }
 
           span.textContent = result.score;

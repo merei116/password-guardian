@@ -2,11 +2,7 @@
 # train_password_lstm.py
 # ================================================================
 # Пример запуска:
-# python train_password_lstm.py \
-#   --data mari.csv --col -1 --epochs 20 \
-#   --save_ckpt personal.pth \
-#   --export_onnx personal_lstm.onnx \
-#   --patterns patterns.json
+# python train_password_lstm.py --data merei1.csv --col -1 --epochs 20 --save_ckpt personal.pth --export_onnx personal_lstm.onnx --patterns patterns.json
 # ================================================================
 
 import argparse, os, json, random, re, pathlib, sys
