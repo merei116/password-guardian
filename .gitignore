@@ -3,13 +3,9 @@
 ########################################
 # Игнорируем все виртуалки и тяжёлые библиотеки
 model/.pwenv/
-dist/
-*.dll
-*.lib
-*.onnx
-*.jso
+
 node_modules/
-dist/                     # vite build output
+
 *.log                     # npm logs
 build/
 

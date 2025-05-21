@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "Password Guardian",
+  "description": "Rates new passwords against personal patterns.",
+  "version": "1.0.0",
+  "action": {
+    "default_title": "Password Guardian",
+    "default_popup": "index.html"
+  },
+  "background": {
+    "service_worker": "background-C7Dy81tn.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "contentscript-loader-password-checker-CiZaXO0u.js"
+      ],
+      "css": [
+        "src/content/style.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab",
+    "action"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/assets/patterns.json",
+        "*.js",
+        "*.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "storage-XNlvAFHd.js",
+        "index-Dob3nYDb.js",
+        "password-checker-CiZaXO0u.js"
+      ],
+      "use_dynamic_url": true
+    }
+  ]
+}
