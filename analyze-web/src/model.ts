@@ -57,7 +57,7 @@ export async function predictStrength(pwd: string): Promise<{avg: number; percen
   const avg = -total/seq;                     // lower → weaker
 // model.ts  – после вычисления avg
   const MIN = 1.5;   // минимальный валидационный avg   (≈ слабый)
-  const MAX = 2.5;   // максимальный валидационный avg   (≈ абсолютно случайный)
+  const MAX = 2.7;   // максимальный валидационный avg   (≈ абсолютно случайный)
 
   const percent = Math.round(
     Math.min(Math.max((avg - MIN) / (MAX - MIN), 0), 1) * 100

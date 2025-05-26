@@ -3,10 +3,13 @@
     <h1 class="title">Password Strength Analyzer</h1>
 
     <input
-      v-model="password"
-      type="text"
-      placeholder="Type your passwords"
+    v-model="password"
+    :type="showPassword ? 'text' : 'password'"
+    placeholder="Type your passwords"
     />
+    <button @click="showPassword = !showPassword" type="button">
+      {{ showPassword ? '🙈 Hide' : '👁 Show' }}
+    </button>
     <button @click="analyzePassword">
       🔍 Check
     </button>
@@ -14,6 +17,11 @@
     <div v-if="password" class="results">
       <div :class="`badge ${badgeClass}`">
         {{ strengthLabel }}
+      </div>
+      <div v-if="breachesCount !== null" class="stat">
+        <b>Data-breach check:</b>
+        <span v-if="breachesCount === 0">✅ Not found</span>
+        <span v-else>❌ Found {{ breachesCount }} times!</span>
       </div>
 
       <div v-if="matchedPatterns.length" class="warning">
@@ -51,9 +59,11 @@
 
 
 <script setup lang="ts">
+const showPassword = ref(false)
 import { ref, computed, onMounted } from 'vue'
 import { loadModel, predictStrength } from '../model.ts'
 import PasswordChart from '../components/PasswordChart.vue'
+const breachesCount = ref<number | null>(null)
 
 /* ─────────── state ─────────── */
 const password        = ref('')
@@ -69,6 +79,7 @@ const avoidPatterns = ref<string[]>([])
 const strengthLabel = computed(() => {
   if (strengthPercent.value === null) return '—'
   if (strengthPercent.value < 40) return 'WEAK'
+  if (breachesCount.value !== null && breachesCount.value > 0) return 'WEAK'
   if (strengthPercent.value < 70) return 'MED'
   return 'STRONG'
 })
@@ -77,6 +88,20 @@ const badgeClass = computed(() =>
   : strengthLabel.value === 'MED' ? 'bg-yellow-500'
   : 'bg-green-500'
 )
+
+async function checkPwnedPassword (pwd: string): Promise<number> {
+  // k-Anonymity запрос к HIBP
+  const buf    = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(pwd))
+  const hash   = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase()
+  const prefix = hash.slice(0, 5)
+  const suffix = hash.slice(5)
+
+  const res = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`)
+  if (!res.ok) return -1                        // сеть упала — не ругаемся
+  const hit = res.textSync ? res.textSync() : await res.text()
+  const line = hit.split('\n').find(l => l.startsWith(suffix))
+  return line ? parseInt(line.split(':')[1], 10) : 0
+}
 
 /* ─────────── загрузка модели и patterns ─────────── */
 onMounted(async () => {
@@ -109,7 +134,7 @@ onMounted(async () => {
 /* ─────────── кнопка «Проверить» ─────────── */
 async function analyzePassword () {
   if (!password.value) {
-    modelScore.value = strengthPercent.value = null
+    modelScore.value = strengthPercent.value =  breachesCount.value = null
     matchedPatterns.value = []
     console.warn('[Analyze] пустой пароль')
     return
@@ -128,6 +153,8 @@ async function analyzePassword () {
   ).join('')
   matchedPatterns.value = patterns.value.masks?.[mask]
     ? [`Маска "${mask}"`] : []
+  breachesCount.value = await checkPwnedPassword(password.value)
+
 }
 </script>
 

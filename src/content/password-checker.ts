@@ -1,6 +1,7 @@
 // src/content/password-checker.ts
 import { get } from '../shared/storage';
 import { openDB } from 'idb';
+let seq = 0;  
 
 interface Patterns {
   masks?: Record<string, number>;
@@ -47,6 +48,7 @@ function rate(pwd: string, pat: Patterns, keywords: string[]): RatedResult {
   if (keywordMatches.length > 0) score -= 20;
   if (patternMatches.length > 0) score -= 30;
 
+
   let result: 'WEAK' | 'MED' | 'STRONG' = 'WEAK';
   if (score >= 70) result = 'STRONG';
   else if (score >= 40) result = 'MED';
@@ -55,6 +57,32 @@ function rate(pwd: string, pat: Patterns, keywords: string[]): RatedResult {
     score: result,
     matches: [...keywordMatches, ...patternMatches],
   };
+}
+
+async function checkPwnedPassword(password: string): Promise<number> {
+  const sha1 = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(password));
+  const hashArray = Array.from(new Uint8Array(sha1));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+  const prefix = hashHex.slice(0, 5);
+  const suffix = hashHex.slice(5);
+
+  const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
+  if (!response.ok) {
+    console.error("HIBP API error:", response.status);
+    return 0;
+  }
+
+  const text = await response.text();
+  const lines = text.split('\n');
+
+  for (const line of lines) {
+    const [hashSuffix, count] = line.trim().split(':');
+    if (hashSuffix === suffix) {
+      return parseInt(count, 10);
+    }
+  }
+
+  return 0;
 }
 
 // Загрузка patterns из assets
@@ -105,9 +133,15 @@ async function loadDynamicPatterns(): Promise<Patterns> {
         input.after(span, info);
 
         input.addEventListener('input', () => {
+          
+          
           const val = input.value;
           const result = rate(val, staticPatterns, keywordList);
-
+          const id    = ++seq;            // текущий номер запроса
+          info.innerHTML = '';            // мгновенно очищаем вывод
+          span.textContent = '…'; 
+          span.className   = 'pg-badge WEAK';
+          const extraNotes: string[] = [];
           const mask = getMask(val);
           const maskFreq = staticPatterns.masks?.[mask] || 0;
           const matched = result.matches;
@@ -116,24 +150,33 @@ async function loadDynamicPatterns(): Promise<Patterns> {
           const passwordCounts = staticPatterns.password_counts || {};
           const repeats = passwordCounts[val] || 0;
 
-          const extraNotes: string[] = [];
-          if (matched.length > 0) {
-            extraNotes.push(`⚠️ Matches found: ${matched.join(', ')}`);
-          }
-          if (maskFreq > 0) {
-            extraNotes.push(`⚠️ The mask "${mask}" has been encountered ${maskFreq} times`);
-          }
-          if (repeats > 1) {
-            extraNotes.push(`❗ The password has been found ${repeats} times in the history`);
-          }
+          checkPwnedPassword(val).then(pwnCount => {
+            if (!val) { span.textContent = '…'; info.innerHTML=''; return; }
 
-          span.textContent = result.score;
-          span.className = 'pg-badge ' + result.score;
+            if (id !== seq) return;
+            if (pwnCount > 0) {
+              extraNotes.push(`❌ This password was found ${pwnCount} times in data breaches!`);
+            }
+            if (matched.length > 0) {
+              extraNotes.push(`⚠️ Matches found: ${matched.join(', ')}`);
+            }
+            if (maskFreq > 0) {
+              extraNotes.push(`⚠️ The mask "${mask}" has been encountered ${maskFreq} times`);
+            }
+            if (repeats > 1) {
+              extraNotes.push(`❗ The password has been found ${repeats} times in the history`);
+            }
+          const finalScore: 'WEAK' | 'MED' | 'STRONG' =
+          pwnCount > 0 ? 'WEAK' : result.score;        // если утечка — всегда WEAK
+          span.textContent = finalScore;                 // обновляем текст бейджа
+          span.className   = 'pg-badge ' + finalScore;
 
-          info.innerHTML = `
-            <div><strong>Keywords:</strong> ${topKeywords.join(', ')}</div>
-            ${extraNotes.map(m => `<div>${m}</div>`).join('')}
-          `;
+          
+            info.innerHTML = `
+              <div><strong>Keywords:</strong> ${topKeywords.join(', ')}</div>
+              ${extraNotes.map(m => `<div>${m}</div>`).join('')}
+            `;
+          });
         });
       });
   }

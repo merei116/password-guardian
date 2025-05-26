@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Password Guardian",
   "description": "Rates new passwords against personal patterns.",
-  "version": "1.0.0",
+  "version": "1.5.3",
 
   "action": {
     "default_title": "Password Guardian",
