@@ -66,14 +66,19 @@ async function checkPwnedPassword(password: string): Promise<number> {
   const prefix = hashHex.slice(0, 5);
   const suffix = hashHex.slice(5);
 
-  const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
-  if (!response.ok) {
-    console.error("HIBP API error:", response.status);
+  let responseText = '';
+  try {
+    const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
+    if (!response.ok) {
+      console.error("HIBP API error:", response.status);
+      return 0;
+    }
+    responseText = await response.text();
+  } catch (err) {
+    console.error('Failed to query HIBP API:', err);
     return 0;
   }
-
-  const text = await response.text();
-  const lines = text.split('\n');
+  const lines = responseText.split('\n');
 
   for (const line of lines) {
     const [hashSuffix, count] = line.trim().split(':');
